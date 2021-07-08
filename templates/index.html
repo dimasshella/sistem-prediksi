@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Prediksi Kesiapan Alutsista</title>
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/datepicker3.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i"
+		rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<ul class="nav navbar-top-links navbar-right">
+					<li><a href="/"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+			</div>
+		</div><!-- /.container-fluid -->
+	</nav>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name">Prediksi Kesiapan</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<ul class="nav menu">
+			{% if session['role']=="admin" %}
+			<li class="active"><a href="index"><em class="fa fa-home">&nbsp;</em> Home</a></li>
+			<li><a href="data-anggaran"><em class="fa fa-calendar">&nbsp;</em> Data Anggaran</a></li>
+			<li><a href="data_kesiapan"><em class="fa fa-columns">&nbsp;</em> Data Kesiapan</a></li>
+			<li><a href="prediksi"><em class="fa fa-calculator">&nbsp;</em> Prediksi</a></li>
+			<li><a href="rekomendasi"><em class="fa fa-check-square">&nbsp;</em> Rekomendasi</a></li>
+			<li><a href="admin"><em class="fa fa-user">&nbsp;</em> Admin</a></li>
+			{% else %}
+			<li ><a href="index"><em class="fa fa-home">&nbsp;</em> Home</a></li>
+			<li><a href="prediksi"><em class="fa fa-calculator">&nbsp;</em> Prediksi</a></li>
+			<li><a href="rekomendasi"><em class="fa fa-check-square">&nbsp;</em> Rekomendasi</a></li>
+			{% endif %}
+		</ul>
+	</div>
+	<!--/.sidebar-->
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+		<div class="row">
+			
+			<div class="col-lg-12">
+				<center><h1 class="page-header">Prediksi Kesiapan Operasi Alat Utama Sistem Senjata</h1></center>
+			</div>
+		</div>
+		<div class="panel panel-container">
+			<div class="row">
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-teal panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-calendar color-blue"></em>
+							<div class="large">{{anggaran}}</div>
+							<div class="text-muted">Data Anggaran</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-blue panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-columns color-orange"></em>
+							<div class="large">{{kesiapan.0}}</div>
+							<div class="text-muted">Data Kesiapan Operasi Alutsista</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-orange panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-check-square color-teal"></em>
+							<div class="large">{{rekomendasi.0}}</div>
+							<div class="text-muted">Data Rekomendasi</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-red panel-widget ">
+						<div class="row no-padding"><em class="fa fa-xl fa-user color-red"></em>
+							<div class="large">{{admin.0}}</div>
+							<div class="text-muted">Data Admin</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.row-->
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Grafik Data Anggaran
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body">
+						<div class="canvas-wrapper">
+							<canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/.row-->
+		<div class="col-sm-12">
+			<p class="back-link">Lumino Theme by <a href="https://www.medialoot.com">Medialoot</a></p>
+		</div>
+	</div>
+	<!--/.row-->
+	</div>
+	<!--/.main-->
+
+	<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/chart-data.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/easypiechart.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/easypiechart-data.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+	<script>
+		window.onload = function () {
+			const grafik = JSON.parse( '{{grafik|tojson}}')
+			console.log(grafik)
+			let tahun = []
+			let angg = []
+			grafik.forEach(el => {
+				tahun.push(el[1].toString())
+				console.log(el[2].split(" ")[0])
+				angg.push(parseInt(el[2].split(" ")[0]))
+			});
+			var ctx = document.getElementById('line-chart').getContext('2d');
+			var myChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels:tahun,
+					datasets: [{
+						label: 'Anggaran dalam triliun',
+						data:angg,
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(255, 206, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(255, 159, 64, 0.2)'
+						],
+						borderColor: [
+							'rgba(255, 99, 132, 1)',
+							'rgba(54, 162, 235, 1)',
+							'rgba(255, 206, 86, 1)',
+							'rgba(75, 192, 192, 1)',
+							'rgba(153, 102, 255, 1)',
+							'rgba(255, 159, 64, 1)'
+						],
+						borderWidth: 1
+					}]
+				}
+			});
+		};
+	</script>
+
+</body>
+
+</html>

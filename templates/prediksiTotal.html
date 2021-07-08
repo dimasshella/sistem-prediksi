@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Prediksi Kesiapan Alutsista</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+
+    <!--Custom Font-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+    <!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+    <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <ul class="nav navbar-top-links navbar-right">
+                    <li><a href="/"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+            </div>
+        </div><!-- /.container-fluid -->
+    </nav>
+    <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+        <div class="profile-sidebar">
+            <div class="profile-usertitle">
+                <div class="profile-usertitle-name">Prediksi Kesiapan</div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="divider"></div>
+        <ul class="nav menu">
+            {% if session['role']=="admin" %}
+			<li><a href="index"><em class="fa fa-home">&nbsp;</em> Home</a></li>
+			<li><a href="data-anggaran"><em class="fa fa-calendar">&nbsp;</em> Data Anggaran</a></li>
+			<li><a href="data_kesiapan"><em class="fa fa-columns">&nbsp;</em> Data Kesiapan</a></li>
+			<li class="active"><a href="prediksi"><em class="fa fa-calculator">&nbsp;</em> Prediksi</a></li>
+			<li><a href="rekomendasi"><em class="fa fa-check-square">&nbsp;</em> Rekomendasi</a></li>
+			<li><a href="admin"><em class="fa fa-user">&nbsp;</em> Admin</a></li>
+			{% else %}
+            <li><a href="index"><em class="fa fa-home">&nbsp;</em> Home</a></li>
+			<li class="active"><a href="prediksi"><em class="fa fa-calculator">&nbsp;</em> Prediksi</a></li>
+            <li class=""><a href="rekomendasi"><em class="fa fa-check-square">&nbsp;</em> Rekomendasi</a></li>
+			{% endif %}
+        </ul>
+    </div>
+    <!--/.sidebar-->
+
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <center>
+                        <h1 class="page-header">Prediksi Total Kesiapan Operasi Alutsista</h1>
+                    </center>
+                    <div>
+                        <form action="{{ url_for('hitungMape', th=th) }}">
+                            <!-- <div class="form-group">
+                                <label for="th">Tahun Prediksi</label> -->
+                                <input type="hidden" value="{{tahun}}" class="form-control" id="th" name="th">
+                            
+                            <!-- </div> -->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-warning">MAPE</button>
+                            </div>
+                        </form>
+                        <a class="btn btn-primary" href="/prediksi">Kembali</a>
+                    </div>
+                    <br>
+                </div>
+            </div>
+            <!--/.row-->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="white-box">
+                            <div class="table-responsive">
+                                <table class="table text-nowrap">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">No.</th>
+                                            <th class="border-top-0">Tahun</th>
+                                            <th class="border-top-0">Periode</th>
+                                            <th class="border-top-0">Nilai Prediksi</th>
+                                            <th class="border-top-0">Nilai Aktual</th>
+                                            <th class="border-top-0">PE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        {% for rs in data %}
+                                        
+                                        <tr>
+                                            <td>{{ rs.0 }}</td>
+                                            <td>{{ rs.1 }}</td>
+                                            <td>{{ rs.2 }}</td>
+                                            <td>{{ (a + (b*rs.3))|round(2) }}</td>
+                                            <td>{{ rs.6 }}</td>
+                                            <td>{{ (((rs.6 -( a + (b*rs.3)))/rs.6)|abs |round(4) * 100 )|round(2)}} %</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.col-->
+                </div>
+                <!--/.row-->
+                <div class="col-sm-12">
+                    <p class="back-link">Lumino Theme by <a href="https://www.medialoot.com">Medialoot</a></p>
+                </div>
+            </div>
+            <!--/.main-->
+        </div>
+    </div>
+
+
+        <script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/chart-data.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/easypiechart.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/easypiechart-data.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+</body>
+
+</html>

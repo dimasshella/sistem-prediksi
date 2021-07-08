@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Prediksi Kesiapan Alutsista</title>
+	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/font-awesome.min.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/datepicker3.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+
+	<!--Custom Font-->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i"
+		rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="js/html5shiv.js"></script>
+	<script src="js/respond.min.js"></script>
+	<![endif]-->
+</head>
+
+<body>
+	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<ul class="nav navbar-top-links navbar-right">
+					<li><a href="/"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+			</div>
+		</div><!-- /.container-fluid -->
+	</nav>
+	<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+		<div class="profile-sidebar">
+			<div class="profile-usertitle">
+				<div class="profile-usertitle-name">Prediksi Kesiapan</div>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="divider"></div>
+		<ul class="nav menu">
+			{% if session['role']=="admin" %}
+			<li><a href="index"><em class="fa fa-home">&nbsp;</em> Home</a></li>
+            <li><a href="data-anggaran"><em class="fa fa-calendar">&nbsp;</em> Data Anggaran</a></li>
+            <li><a href="data_kesiapan"><em class="fa fa-columns">&nbsp;</em> Data Kesiapan</a></li>
+            <li><a href="prediksi"><em class="fa fa-calculator">&nbsp;</em> Prediksi</a></li>
+			<li class="active"><a href="rekomendasi"><em class="fa fa-check-square">&nbsp;</em> Rekomendasi</a></li>
+            <li><a href="admin"><em class="fa fa-user">&nbsp;</em> Admin</a></li>
+			{% else %}
+			<li><a href="index"><em class="fa fa-home">&nbsp;</em> Home</a></li>
+            <li class=""><a href="prediksi"><em class="fa fa-calculator">&nbsp;</em> Prediksi</a></li>
+            <li class="active"><a href="rekomendasi"><em class="fa fa-check-square">&nbsp;</em> Rekomendasi</a></li>
+			{% endif %}
+		</ul>
+	</div>
+	<!--/.sidebar-->
+
+	<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
+		<div class="row">
+			<div class="col-lg-12">
+				<center><h1 class="page-header">Rekomendasi Kesiapan Operasi Alutsista</h1></center>
+			</div>
+		</div>
+		<!--/.row-->
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="white-box">
+						<div class="table-responsive">
+							<table class="table text-nowrap">
+								<thead>
+									<tr>
+										<th class="border-top-0">No.</th>
+										<th class="border-top-0">Tahun</th>
+										<th class="border-top-0">Jumlah Anggaran</th>
+										<th class="border-top-0">Keterangan</th>
+										<th class="border-top-0">Rekomendasi</th>
+										{% if session['role']=="admin" %}
+											<th class="border-top-0">Aksi</th>
+										{% endif %}
+									</tr>
+								</thead>
+								<tbody>
+									{% for rs in data %}
+									<tr>
+										<td>{{ rs.0 }}</td>
+										<td>{{ rs.1 }}</td>
+										<td>{{ rs.2 }}</td>
+										<td>{{ rs.3 }}</td>
+										<td>{{ rs.4 }}</td>
+										{% if session['role']=="admin" %}
+											<td>
+												<a href="#!" class="btn btn-warning btn-xs" data-toggle="modal"
+													data-target="#modalEdit{{ rs.0 }}">Ubah</a>
+												<a href="hapusRekomendasi/{{ rs.0 }}" class="btn btn-danger btn-xs"
+													onclick="return confirm('Yakin ingin dihapus?')">Hapus</a>
+											</td>
+										{% endif %}
+										
+									</tr>
+									<div id="modalEdit{{ rs.0 }}" class="modal fade" role="dialog">
+										<div class="modal-dialog">
+
+											<!-- Modal content-->
+											<div class="modal-content">
+												<div class="modal-header">
+													<button type="button" class="close"
+														data-dismiss="modal">&times;</button>
+													<h4 class="modal-title">Ubah Data Rekomendasi</h4>
+												</div>
+												<div class="modal-body">
+													<form action="{{ url_for('ubahRekomendasi') }}" method="POST">
+														<div class="form-group">
+															<label for="tahun">Tahun</label>
+															<input type="hidden" name="id_rekomendasi" value="{{ rs.0 }}">
+															<input required type="text" class="form-control" id="tahun"
+																name="tahun" value="{{ rs.1 }}">
+														</div>
+														<div class="form-group">
+															<label for="jml_anggaran">Jumlah Anggaran</label>
+															<input required type="text" class="form-control" id="jml_anggaran"
+																name="jml_anggaran">
+														</div>
+														<div class="form-group">
+															<label for="ket">Keterangan</label>
+															<input required type="text" class="form-control" id="ket"
+																name="ket">
+														</div>
+														<div class="form-group">
+															<label for="rekomendasi">Rekomendasi</label>
+															<input required type="text" class="form-control" id="rekomendasi"
+																name="rekomendasi">
+														</div>
+														<div class="form-group">
+															<button type="submit" class="btn btn-warning">Ubah</button>
+														</div>
+													</form>
+												</div>
+
+											</div>
+										</div>
+										{% endfor %}
+								</tbody>
+							</table>
+							{% if session['role']=="admin" %}
+							<button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Tambah Data</button>
+							{% endif %}
+
+						</table>
+						</div>
+					</div>
+					<div id="myModal" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Tambah Data Rekomendasi</h4>
+								</div>
+								<div class="modal-body">
+									<form action="{{ url_for('simpanRekomendasi') }}" method="POST">
+										<div class="form-group">
+											<label for="tahun">Tahun</label>
+											<input required type="text" class="form-control" id="tahun" name="tahun">
+										</div>
+										<div class="form-group">
+											<label for="jml_anggaran">Jumlah Anggaran</label>
+											<input required type="text" class="form-control" id="jml_anggaran"
+												name="jml_anggaran">
+										</div>
+										<div class="form-group">
+											<label for="ket">Keterangan</label>
+											<input required type="text" class="form-control" id="ket"
+												name="ket">
+										</div>
+										<div class="form-group">
+											<label for="rekomendasi">Rekomendasi</label>
+											<input required type="text" class="form-control" id="rekomendasi"
+												name="rekomendasi">
+										</div>
+										<div class="form-group">
+                                            <button type="submit" class="btn btn-primary">Tambahkan</button>
+                                        </div>
+									</form>
+								</div>
+
+							</div>
+						</div>
+						<!--/.col-->
+					</div>
+					<!--/.row-->
+					<div class="col-sm-12">
+						<p class="back-link">Lumino Theme by <a href="https://www.medialoot.com">Medialoot</a></p>
+					</div>
+				</div>
+				<!--/.main-->
+
+
+				<script src="{{ url_for('static', filename='js/jquery-1.11.1.min.js') }}"></script>
+				<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+				<script src="{{ url_for('static', filename='js/chart.min.js') }}"></script>
+				<script src="{{ url_for('static', filename='js/chart-data.js') }}"></script>
+				<script src="{{ url_for('static', filename='js/easypiechart.js') }}"></script>
+				<script src="{{ url_for('static', filename='js/easypiechart-data.js') }}"></script>
+				<script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
+				<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+
+</body>
+
+</html>
