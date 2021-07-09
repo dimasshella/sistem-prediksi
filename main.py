@@ -1,14 +1,6 @@
-import numpy as np
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
-import pickle
-from sklearn import preprocessing
-from sklearn.model_selection import train_test_split
-from sklearn import metrics
-from sklearn.metrics import confusion_matrix
-import statsmodels.api as sm
-from sklearn import linear_model
 
 application = Flask(__name__)
 application.config['MYSQL_HOST'] = 'sql6.freemysqlhosting.net'
@@ -23,7 +15,6 @@ def index():
     query_anggaran = "SELECT * FROM data_anggaran;"
     query_rekomendasi = "SELECT COUNT(*) FROM data_rekomendasi;"
     query_admin = "SELECT COUNT(*) FROM data_user;"
-    # query_ = "SELECT COUNT(*) FROM data_user;"
 
     cur = mysql.connection.cursor()
     cur.execute(query_kesiapan)
@@ -50,10 +41,7 @@ def login():
         if len(user) > 0:
             print(user["password"])
 
-            # if bcrypt.hashpw(password, user["password"]) :
-            # if bcrypt.checkpw(user["password"].encode('utf-8'), password.encode('utf-8')):
             if password == user["password"]:
-            # if user['password'].decode('utf-8') == bcrypt.hashpw(password.encode('utf-8'), user['password']).decode('utf-8'):
                 session['nama'] = user['nama']
                 session['email'] = user['email']
                 session["role"] = user["level"]
@@ -331,8 +319,3 @@ def hapusAdmin(id_user):
     cur.execute("DELETE FROM data_user WHERE id_user=%s", (id_user,))
     mysql.connection.commit()
     return redirect(url_for('dataAdmin'))
-
-if __name__ == '__main__':
-    application.secret_key = 'secret'
-    application.config['SESSION_TYPE'] = 'filesystem'
-    application.run(debug=True)
