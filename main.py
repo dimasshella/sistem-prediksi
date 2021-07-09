@@ -319,7 +319,3 @@ def hapusAdmin(id_user):
     cur.execute("DELETE FROM data_user WHERE id_user=%s", (id_user,))
     mysql.connection.commit()
     return redirect(url_for('dataAdmin'))
-
-# if __name__ == '__main__':
-   
-#     application.run(debug=True)
