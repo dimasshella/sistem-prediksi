@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 
 application = Flask(__name__)
+application.secret_key = 'resdust'
 application.config['MYSQL_HOST'] = 'sql6.freemysqlhosting.net'
 application.config['MYSQL_USER'] = 'sql6423736'
 application.config['MYSQL_PASSWORD'] = '1uncDdMBWn'
