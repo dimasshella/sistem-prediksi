@@ -12,7 +12,7 @@ mysql = MySQL(application)
 
 @application.route('/index')
 def index():
-    query_kesiapan = "SELECT COUNT(*) FROM data_kesiapan;"
+    query_kesiapan = "SELECT * FROM data_kesiapan;"
     query_anggaran = "SELECT * FROM data_anggaran;"
     query_rekomendasi = "SELECT COUNT(*) FROM data_rekomendasi;"
     query_admin = "SELECT COUNT(*) FROM data_user;"
@@ -27,7 +27,7 @@ def index():
     cur.execute(query_admin)
     admin = cur.fetchall()
     cur.close()
-    return render_template('index.html', kesiapan=kesiapan[0], anggaran=len(anggaran[0]), grafik=anggaran, rekomendasi=rekomendasi[0], admin=admin[0])
+    return render_template('index.html', kesiapan=len(kesiapan[0]), anggaran=len(anggaran[0]), grafik=anggaran, rekomendasi=rekomendasi[0], admin=admin[0], grafik2=kesiapan)
 
 @application.route('/', methods=["GET","POST"])
 def login():
