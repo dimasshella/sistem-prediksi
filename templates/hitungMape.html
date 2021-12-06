@@ -80,7 +80,9 @@
                                             <th class="border-top-0">Tahun</th>
                                             <th class="border-top-0">Total PE</th>
                                             <th class="border-top-0">MAPE</th>
-                                            <th class="border-top-0">R Square</th>
+                                            <th class="border-top-0">Nilai Akurasi</th>
+                                            <th class="border-top-0">R Squared</th>
+                                            <th class="border-top-0">Keterangan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -89,7 +91,17 @@
                                             <td>{{tahun }}</td>
                                             <td>{{(totalPE |round(4)|abs * 100) |round(4) }} %</td>
                                             <td>{{(mape |round(4)|abs * 100) |round(4) }} %</td>
-                                            <td>{{(r |round(4) * 100)}} %</td>
+                                            <td>{{(100 - mape |round(4) * 100 ) |round(4)}} %</td>
+                                            <td>{{(r |round(4)|abs * 100) |round(4) }} %</td>
+                                            {% if (mape |round(4)|abs * 100) |round(4) < 10 %}
+                                            <td>Akurasi Tinggi</td>
+                                            {% elif (mape |round(4)|abs * 100) |round(4) >= 10 and  (mape |round(4)|abs * 100) |round(4) < 20  %}
+                                            <td>Peramalan Baik</td>
+                                            {% elif (mape |round(4)|abs * 100) |round(4) >= 20 and  (mape |round(4)|abs * 100) |round(4) < 30  %}
+                                            <td>Peramalan Layak</td>
+                                            {% else  %}
+                                            <td>Peramalan Buruk</td>
+                                            {% endif  %}
                                         </tr>
                                     </tbody>
                                 </table>

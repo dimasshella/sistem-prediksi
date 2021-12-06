@@ -62,6 +62,7 @@
 						<div>
 						<button type="button" class="btn btn-primary" data-toggle="modal"
 							data-target="#myModal">Prediksi Total</button>
+							<h4>Tabel dibawah ini adalah tabel untuk mempermudah perhitungan prediksi yang akan dilakukan. Klik Prediksi Total untuk melihat hasil prediksi!</h4>
 
 							<div id="myModal" class="modal fade" role="dialog">
 								<div class="modal-dialog">
@@ -75,9 +76,9 @@
 										<div class="modal-body">
 											<form action="{{ url_for('prediksiTotal', th=th) }}">
 												<div class="form-group">
-													<label for="th">Tahun Prediksi</label>
-													<input type="text" class="form-control" id="th" name="th">
-												</div>
+													<select name="th" class="form-control" id="select-tahun">
+													</select>
+												  </div>
 												<div class="form-group">
 													<button type="submit" class="btn btn-warning">Hitung</button>
 												</div>
@@ -95,7 +96,7 @@
 										<th class="border-top-0">No.</th>
 										<th class="border-top-0">Tahun</th>
 										<th class="border-top-0">Kekuatan</th>
-										<th class="border-top-0">Periode(X)</th>
+										<th class="border-top-0">Sirkulasi Pesawat(X)</th>
 										<th class="border-top-0">Rata-rata Kesiapan(Y)</th>
 										<th class="border-top-0">X^2</th>
 										<th class="border-top-0">Y^2</th>
@@ -139,6 +140,18 @@
 	<script src="{{ url_for('static', filename='js/bootstrap-datepicker.js') }}"></script>
 	<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
 
+	<script>
+		const data = JSON.parse( '{{ data|tojson}}')
+		console.log(data)
+		let tahun = []
+		data.forEach(el => {
+				if(!tahun.find(th => th === el[1])){
+					tahun.push(el[1])
+					if(tahun.length > 1)
+						$("#select-tahun").append(`<option value="${el[1]}">${el[1]}</option>`)
+				}
+			});
+	</script>
 </body>
 
 </html>

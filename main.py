@@ -4,10 +4,10 @@ import bcrypt
 
 application = Flask(__name__)
 application.secret_key = 'resdust'
-application.config['MYSQL_HOST'] = 'sql6.freemysqlhosting.net'
-application.config['MYSQL_USER'] = 'sql6423736'
-application.config['MYSQL_PASSWORD'] = '1uncDdMBWn'
-application.config['MYSQL_DB'] = 'sql6423736'
+application.config['MYSQL_HOST'] = 'localhost'
+application.config['MYSQL_USER'] = 'root'
+application.config['MYSQL_PASSWORD'] = ''
+application.config['MYSQL_DB'] = 'db_kesiapan'
 mysql = MySQL(application)
 
 @application.route('/index')
@@ -27,7 +27,7 @@ def index():
     cur.execute(query_admin)
     admin = cur.fetchall()
     cur.close()
-    return render_template('index.html', kesiapan=len(kesiapan[0]), anggaran=len(anggaran[0]), grafik=anggaran, rekomendasi=rekomendasi[0], admin=admin[0], grafik2=kesiapan)
+    return render_template('index.html', kesiapan=len(kesiapan), anggaran=len(anggaran[0]), grafik=anggaran, rekomendasi=rekomendasi[0], admin=admin[0], grafik2=kesiapan)
 
 @application.route('/', methods=["GET","POST"])
 def login():
@@ -188,7 +188,7 @@ def prediksiTotal():
     b = tmpB / ((n * x2) - (x*x))
     print(a)
     print(b)
-    return render_template('prediksiTotal.html', data=kesiapanData, a=a, b=b, tahun=th)
+    return render_template('prediksiTotal.html', data=kesiapanData, a=a, b=b, tahun=th, dataSebelum=kesiapanDataSebelum)
 
 @application.route('/prediksi')
 def prediksi():
@@ -224,7 +224,7 @@ def hitungMape():
     tmpB = (n*xy) - (x*y)
     b = tmpB / ((n * x2) - (x*x))
 
-    totalPE = sum( abs((c[6] -( a + (b*c[3])))/c[6])  for c in kesiapanData)
+    totalPE = sum( abs((c[6] -( a + (b*c[2])))/c[6])  for c in kesiapanData)
     mape = totalPE/12
 
     tmpR = ((n*xy) - (x*y)) * ((n*xy) - (x*y))

@@ -88,7 +88,7 @@
                                         <tr>
                                             <th class="border-top-0">No.</th>
                                             <th class="border-top-0">Tahun</th>
-                                            <th class="border-top-0">Periode</th>
+                                            <th class="border-top-0">Sirkulasi Pesawat</th>
                                             <th class="border-top-0">Nilai Prediksi</th>
                                             <th class="border-top-0">Nilai Aktual</th>
                                             <th class="border-top-0">PE</th>
@@ -102,9 +102,9 @@
                                             <td>{{ rs.0 }}</td>
                                             <td>{{ rs.1 }}</td>
                                             <td>{{ rs.2 }}</td>
-                                            <td>{{ (a + (b*rs.3))|round(2) }}</td>
+                                            <td>{{ (a + (b*rs.2))|round(2) }}</td>
                                             <td>{{ rs.6 }}</td>
-                                            <td>{{ (((rs.6 -( a + (b*rs.3)))/rs.6)|abs |round(4) * 100 )|round(2)}} %</td>
+                                            <td>{{ (((rs.6 -( a + (b*rs.2)))/rs.6)|abs |round(4) * 100 )|round(2)}} %</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>
